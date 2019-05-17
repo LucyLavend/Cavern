@@ -1,0 +1,8 @@
+*.csproj
+*.csproj.user
+obj
+bin
+.sln
+Doxyfile
+Makefile
+.vs
