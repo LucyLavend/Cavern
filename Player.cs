@@ -14,6 +14,14 @@ namespace CavernCS
 
         }
 
-        
+        public Room getCurrentRoom()
+        {
+            return currentRoom;
+        }
+
+        public void setCurrentRoom(Room r)
+        {
+            currentRoom = r;
+        }
     }
 }

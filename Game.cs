@@ -6,13 +6,12 @@ namespace CavernCS
 	{
 		private Parser parser;
         private Player player;
-		private Room currentRoom;
 
 		public Game ()
 		{
-			createRooms();
             player = new Player();
 			parser = new Parser();
+			createRooms();
 		}
 
 		private void createRooms()
@@ -40,7 +39,7 @@ namespace CavernCS
 
 			office.setExit("west", lab);
 
-			currentRoom = outside;  // start game outside
+			player.setCurrentRoom(outside);  // start game outside
 		}
 
 
@@ -71,7 +70,7 @@ namespace CavernCS
 			Console.WriteLine("Zuul is a new, incredibly boring adventure game.");
 			Console.WriteLine("Type 'help' if you need help.");
 			Console.WriteLine();
-			Console.WriteLine(currentRoom.getLongDescription());
+			Console.WriteLine(player.getCurrentRoom().getLongDescription());
 		}
 
 		/**
@@ -97,7 +96,7 @@ namespace CavernCS
                     goRoom(command);
                     break;
                 case "look":
-                    Console.WriteLine(currentRoom.getLongDescription());
+                    Console.WriteLine(player.getCurrentRoom().getLongDescription());
                     break;
                 case "quit":
 					wantToQuit = true;
@@ -138,13 +137,13 @@ namespace CavernCS
 			string direction = command.getSecondWord();
 
 			// Try to leave current room.
-			Room nextRoom = currentRoom.getExit(direction);
+			Room nextRoom = player.getCurrentRoom().getExit(direction);
 
 			if (nextRoom == null) {
 				Console.WriteLine("There is no door to "+direction+"!");
 			} else {
-				currentRoom = nextRoom;
-				Console.WriteLine(currentRoom.getLongDescription());
+                player.setCurrentRoom(nextRoom);
+				Console.WriteLine(player.getCurrentRoom().getLongDescription());
 			}
 		}
 
