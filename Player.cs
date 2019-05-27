@@ -12,7 +12,7 @@ namespace CavernCS
 
         public Player()
         {
-
+            health = 100;
         }
 
         public Room getCurrentRoom()

@@ -9,6 +9,7 @@ namespace CavernCS
 
 		public Game ()
 		{
+            Console.Title = "Cavern";
             player = new Player();
 			parser = new Parser();
 			createRooms();
@@ -56,6 +57,12 @@ namespace CavernCS
 			while (! finished) {
 				Command command = parser.getCommand();
 				finished = processCommand(command);
+                if (!player.isAlive())
+                {
+                    finished = true;
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("You died!");
+                }
 			}
 			Console.WriteLine("Thank you for playing.");
 		}
@@ -83,9 +90,11 @@ namespace CavernCS
 			bool wantToQuit = false;
 
 			if(command.isUnknown()) {
-				Console.WriteLine("I don't know what you mean...");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Command not found!");
+                Console.ForegroundColor = ConsoleColor.White;
 				return false;
-			}
+            }
 
 			string commandWord = command.getCommandWord();
 			switch (commandWord) {
@@ -127,18 +136,20 @@ namespace CavernCS
 
         private void showCompass()
         {
+            Console.ForegroundColor = ConsoleColor.DarkGray;
             Console.WriteLine("    N    ");
             Console.WriteLine("    |    ");
             Console.WriteLine("W--(*)--E");
             Console.WriteLine("    |    ");
             Console.WriteLine("    S    ");
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
-		/**
+        /**
 	     * Try to go to one direction. If there is an exit, enter the new
 	     * room, otherwise print an error message.
 	     */
-		private void goRoom(Command command)
+        private void goRoom(Command command)
 		{
 			if(!command.hasSecondWord()) {
 				// if there is no second word, we don't know where to go...
@@ -152,10 +163,15 @@ namespace CavernCS
 			Room nextRoom = player.getCurrentRoom().getExit(direction);
 
 			if (nextRoom == null) {
+                Console.ForegroundColor = ConsoleColor.Red;
 				Console.WriteLine("There is no cave to " + direction + "!");
-			} else {
+                Console.ForegroundColor = ConsoleColor.White;
+			} else
+            {
+                player.damage(10);
                 player.setCurrentRoom(nextRoom);
-				Console.WriteLine(player.getCurrentRoom().getLongDescription());
+                Console.WriteLine(player.getCurrentRoom().getLongDescription());
+                Console.Title = player.getCurrentRoom().getShortDescription();
 			}
 		}
 
