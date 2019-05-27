@@ -19,11 +19,11 @@ namespace CavernCS
 			Room outside, theatre, pub, lab, office;
 
 			// create the rooms
-			outside = new Room("outside the main entrance of the university");
-			theatre = new Room("in a lecture theatre");
-			pub = new Room("in the campus pub");
-			lab = new Room("in a computing lab");
-			office = new Room("in the computing admin office");
+			outside = new Room("at the center of the cavesystem");
+			theatre = new Room("at the temple");
+			pub = new Room("at the hideout");
+			lab = new Room("at the waterfall");
+			office = new Room("at the cold dead end");
 
 			// initialise room exits
 			outside.setExit("east", theatre);
@@ -66,8 +66,8 @@ namespace CavernCS
 		private void printWelcome()
 		{
 			Console.WriteLine();
-			Console.WriteLine("Welcome to Zuul!");
-			Console.WriteLine("Zuul is a new, incredibly boring adventure game.");
+			Console.WriteLine("Welcome to Cavern!");
+			Console.WriteLine("Cavern is a small text adventure game.");
 			Console.WriteLine("Type 'help' if you need help.");
 			Console.WriteLine();
 			Console.WriteLine(player.getCurrentRoom().getLongDescription());
@@ -101,6 +101,9 @@ namespace CavernCS
                 case "quit":
 					wantToQuit = true;
 					break;
+                case "compass":
+                    showCompass();
+                    break;
 			}
 
 			return wantToQuit;
@@ -115,12 +118,21 @@ namespace CavernCS
 	     */
 		private void printHelp()
 		{
-			Console.WriteLine("You are lost. You are alone.");
-			Console.WriteLine("You wander around at the university.");
+			Console.WriteLine("You wanted to take a shortcut, but you got lost.");
+			Console.WriteLine("You wander around in a cave system.");
 			Console.WriteLine();
 			Console.WriteLine("Your command words are:");
 			parser.showCommands();
 		}
+
+        private void showCompass()
+        {
+            Console.WriteLine("    N    ");
+            Console.WriteLine("    |    ");
+            Console.WriteLine("W--(*)--E");
+            Console.WriteLine("    |    ");
+            Console.WriteLine("    S    ");
+        }
 
 		/**
 	     * Try to go to one direction. If there is an exit, enter the new
@@ -140,7 +152,7 @@ namespace CavernCS
 			Room nextRoom = player.getCurrentRoom().getExit(direction);
 
 			if (nextRoom == null) {
-				Console.WriteLine("There is no door to "+direction+"!");
+				Console.WriteLine("There is no cave to " + direction + "!");
 			} else {
                 player.setCurrentRoom(nextRoom);
 				Console.WriteLine(player.getCurrentRoom().getLongDescription());

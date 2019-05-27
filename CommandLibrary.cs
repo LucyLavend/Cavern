@@ -16,7 +16,8 @@ namespace CavernCS
 				"go",
 				"quit",
 				"look",
-                "help"
+                "help",
+                "compass"
 			};
 		}
 
