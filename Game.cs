@@ -17,30 +17,34 @@ namespace CavernCS
 
 		private void createRooms()
 		{
-			Room outside, theatre, pub, lab, office;
+			Room center, temple, hideout, waterfall, deadend, underwater;
 
 			// create the rooms
-			outside = new Room("at the center of the cavesystem");
-			theatre = new Room("at the temple");
-			pub = new Room("at the hideout");
-			lab = new Room("at the waterfall");
-			office = new Room("at the cold dead end");
+			center = new Room("at the center of the cavesystem");
+			temple = new Room("at the underground temple");
+			hideout = new Room("at the hideout");
+			waterfall = new Room("at the waterfall");
+			deadend = new Room("at the cold dead end");
+			underwater = new Room("underwater");
 
 			// initialise room exits
-			outside.setExit("east", theatre);
-			outside.setExit("south", lab);
-			outside.setExit("west", pub);
+			center.setExit("east", temple);
+			center.setExit("south", waterfall);
+			center.setExit("west", hideout);
 
-			theatre.setExit("west", outside);
+			temple.setExit("west", center);
 
-			pub.setExit("east", outside);
+			hideout.setExit("east", center);
 
-			lab.setExit("north", outside);
-			lab.setExit("east", office);
+			waterfall.setExit("north", center);
+			waterfall.setExit("east", deadend);
+            waterfall.setExit("down", underwater);
 
-			office.setExit("west", lab);
+			deadend.setExit("west", waterfall);
 
-			player.setCurrentRoom(outside);  // start game outside
+            underwater.setExit("up", waterfall);
+
+			player.setCurrentRoom(center);  // start game center
 		}
 
 
@@ -73,10 +77,13 @@ namespace CavernCS
 		private void printWelcome()
 		{
 			Console.WriteLine();
-			Console.WriteLine("Welcome to Cavern!");
-			Console.WriteLine("Cavern is a small text adventure game.");
-			Console.WriteLine("Type 'help' if you need help.");
+            printLogo();
 			Console.WriteLine();
+            Console.WriteLine("Welcome to Cavern!");
+			Console.WriteLine("Cavern is a small text adventure game.");
+			Console.WriteLine("You ended up somewhere deep in a cave system and you have to find your way out!");
+            Console.WriteLine("Type 'help' if you need help.");
+			Console.WriteLine("------------------------------------------");
 			Console.WriteLine(player.getCurrentRoom().getLongDescription());
 		}
 
@@ -92,7 +99,7 @@ namespace CavernCS
 			if(command.isUnknown()) {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Command not found!");
-                Console.ForegroundColor = ConsoleColor.White;
+                Console.ForegroundColor = ConsoleColor.Gray;
 				return false;
             }
 
@@ -127,22 +134,26 @@ namespace CavernCS
 	     */
 		private void printHelp()
 		{
-			Console.WriteLine("You wanted to take a shortcut, but you got lost.");
+	    	Console.WriteLine("<?--------------------?>");
+            Console.WriteLine("You wanted to take a shortcut, but you got lost.");
 			Console.WriteLine("You wander around in a cave system.");
 			Console.WriteLine();
 			Console.WriteLine("Your command words are:");
 			parser.showCommands();
-		}
+	    	Console.WriteLine("<?--------------------?>");
+        }
 
         private void showCompass()
         {
             Console.ForegroundColor = ConsoleColor.DarkGray;
-            Console.WriteLine("    N    ");
-            Console.WriteLine("    |    ");
-            Console.WriteLine("W--(*)--E");
-            Console.WriteLine("    |    ");
-            Console.WriteLine("    S    ");
-            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine();
+            Console.WriteLine("     N    ");
+            Console.WriteLine("     |    ");
+            Console.WriteLine(" W--(*)--E");
+            Console.WriteLine("     |    ");
+            Console.WriteLine("     S    ");
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Gray;
         }
 
         /**
@@ -163,17 +174,26 @@ namespace CavernCS
 			Room nextRoom = player.getCurrentRoom().getExit(direction);
 
 			if (nextRoom == null) {
-                Console.ForegroundColor = ConsoleColor.Red;
+                Console.ForegroundColor = ConsoleColor.Yellow;
 				Console.WriteLine("There is no cave to " + direction + "!");
-                Console.ForegroundColor = ConsoleColor.White;
+                Console.ForegroundColor = ConsoleColor.Gray;
 			} else
             {
                 player.damage(10);
                 player.setCurrentRoom(nextRoom);
+	    		Console.WriteLine("----");
                 Console.WriteLine(player.getCurrentRoom().getLongDescription());
-                Console.Title = player.getCurrentRoom().getShortDescription();
+                Console.Title = "Cavern: " + player.getCurrentRoom().getShortDescription();
 			}
 		}
+
+        private void printLogo()
+        {
+            Console.WriteLine(@" ___  ___  _ _  ___  ___  _ _ ");
+            Console.WriteLine(@"|  _|| . || | || __|| . \| \ |");
+            Console.WriteLine(@"| <_ |   || ' || _| |   /|   |");
+            Console.WriteLine(@"\___||_|_||__/ |___||_\_\|_\_|");
+        }
 
 	}
 }
