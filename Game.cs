@@ -6,18 +6,28 @@ namespace CavernCS
 	{
 		private Parser parser;
         private Player player;
+		private Room center, temple, hideout, waterfall, deadend, underwater;
+
+        //Items
+        private Ring ring;
+        private Crowbar crowbar;
 
 		public Game ()
 		{
             Console.Title = "Cavern";
             player = new Player();
 			parser = new Parser();
+
 			createRooms();
-		}
+            createItems();
+
+            player.inventory.MaxWeight = 10f;
+            player.inventory.addItem(ring);
+            player.inventory.addItem(crowbar);
+        }
 
 		private void createRooms()
 		{
-			Room center, temple, hideout, waterfall, deadend, underwater;
 
 			// create the rooms
 			center = new Room("at the center of the cavesystem");
@@ -46,6 +56,16 @@ namespace CavernCS
 
 			player.setCurrentRoom(center);  // start game center
 		}
+
+        private void createItems()
+        {
+            ring = new Ring("Ring", "An old looking ring", .1f);
+            crowbar = new Crowbar("Crowbar", "A rusty crowbar", 1.3f);
+
+            center.inventory.addItem(ring);
+
+            hideout.inventory.addItem(ring);
+        }
 
 
 		/**
@@ -79,9 +99,12 @@ namespace CavernCS
 			Console.WriteLine();
             printLogo();
 			Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("Welcome to Cavern!");
+            Console.ForegroundColor = ConsoleColor.Gray;
 			Console.WriteLine("Cavern is a small text adventure game.");
 			Console.WriteLine("You ended up somewhere deep in a cave system and you have to find your way out!");
+            Console.WriteLine("Type 'compass' for a compass.");
             Console.WriteLine("Type 'help' if you need help.");
 			Console.WriteLine("------------------------------------------");
 			Console.WriteLine(player.getCurrentRoom().getLongDescription());
@@ -120,7 +143,16 @@ namespace CavernCS
                 case "compass":
                     showCompass();
                     break;
-			}
+                case "check":
+                    showStats();
+                    break;
+                case "clear":
+                    clearConsole();
+                    break;
+                case "inv":
+                    player.inventory.showContents();
+                    break;
+            }
 
 			return wantToQuit;
 		}
@@ -134,13 +166,17 @@ namespace CavernCS
 	     */
 		private void printHelp()
 		{
+            Console.ForegroundColor = ConsoleColor.DarkGray;
 	    	Console.WriteLine("<?--------------------?>");
+            Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine("You wanted to take a shortcut, but you got lost.");
 			Console.WriteLine("You wander around in a cave system.");
 			Console.WriteLine();
 			Console.WriteLine("Your command words are:");
 			parser.showCommands();
+            Console.ForegroundColor = ConsoleColor.DarkGray;
 	    	Console.WriteLine("<?--------------------?>");
+            Console.ForegroundColor = ConsoleColor.Gray;
         }
 
         private void showCompass()
@@ -154,6 +190,11 @@ namespace CavernCS
             Console.WriteLine("     S    ");
             Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.Gray;
+        }
+
+        private void showStats()
+        {
+            Console.WriteLine("Your current health is " + player.getHealth() + ".");
         }
 
         /**
@@ -179,21 +220,32 @@ namespace CavernCS
                 Console.ForegroundColor = ConsoleColor.Gray;
 			} else
             {
-                player.damage(10);
-                player.setCurrentRoom(nextRoom);
 	    		Console.WriteLine("----");
+                player.setCurrentRoom(nextRoom);
                 Console.WriteLine(player.getCurrentRoom().getLongDescription());
+                //set text above the window to the current room
                 Console.Title = "Cavern: " + player.getCurrentRoom().getShortDescription();
+                //damage player
+                player.damage(10);
+                Console.WriteLine("You have a wound on your arm and lost a bit of blood.");
 			}
 		}
 
+        private void clearConsole()
+        {
+            Console.Clear();
+            printWelcome();
+        }
+
         private void printLogo()
         {
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine(@" ___  ___  _ _  ___  ___  _ _ ");
             Console.WriteLine(@"|  _|| . || | || __|| . \| \ |");
             Console.WriteLine(@"| <_ |   || ' || _| |   /|   |");
             Console.WriteLine(@"\___||_|_||__/ |___||_\_\|_\_|");
+            Console.ForegroundColor = ConsoleColor.Gray;
         }
 
-	}
+    }
 }

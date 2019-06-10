@@ -6,6 +6,7 @@ namespace CavernCS
 	{
 		private string description;
 		private Dictionary<string, Room> exits; // stores exits of this room.
+        public Inventory inventory;
 
 		/**
 	     * Create a room described "description". Initially, it has no exits.
@@ -16,6 +17,7 @@ namespace CavernCS
 		{
 			this.description = description;
 			exits = new Dictionary<string, Room>();
+            inventory = new Inventory();
 		}
 
 		/**
