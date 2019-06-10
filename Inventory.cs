@@ -18,7 +18,7 @@ namespace CavernCS
         public bool addItem(Item item)
         {
             if(item != null){
-                if(totalWeight() + item.Weight <= maxWeigt)
+                if(getTotalWeight() + item.Weight <= maxWeigt)
                 {
                     items.Add(item.Name, item);
                     return true;
@@ -32,7 +32,17 @@ namespace CavernCS
             return false;
         }
 
-        private float totalWeight()
+        public bool removeItem(Item item)
+        {
+            if (item != null)
+            {
+                items.Remove(item.Name);
+                return true;
+            }
+            return false;
+        }
+
+        private float getTotalWeight()
         {
             float tWeight = 0;
             foreach (KeyValuePair<string, Item> entry in items)
@@ -42,15 +52,15 @@ namespace CavernCS
             return tWeight;
         }
 
-        public bool removeItem()
-        {
-            return true;
-        }
-
         public float MaxWeight
         {
             get { return this.maxWeigt; }
             set { this.maxWeigt = value > 0 ? value : 0; }
+        }
+
+        public float getItemCount()
+        {
+            return this.items.Count;
         }
 
         public void showContents()

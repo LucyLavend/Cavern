@@ -64,7 +64,7 @@ namespace CavernCS
 
             center.inventory.addItem(ring);
 
-            hideout.inventory.addItem(ring);
+            hideout.inventory.addItem(crowbar);
         }
 
 
@@ -135,7 +135,9 @@ namespace CavernCS
                     goRoom(command);
                     break;
                 case "look":
+                    Console.WriteLine("--------------------");
                     Console.WriteLine(player.getCurrentRoom().getLongDescription());
+                    printRoomContents();
                     break;
                 case "quit":
 					wantToQuit = true;
@@ -177,6 +179,19 @@ namespace CavernCS
             Console.ForegroundColor = ConsoleColor.DarkGray;
 	    	Console.WriteLine("<?--------------------?>");
             Console.ForegroundColor = ConsoleColor.Gray;
+        }
+
+        private void printRoomContents()
+        {
+            if (player.getCurrentRoom().inventory.getItemCount() != 0)
+            {
+                Console.WriteLine("You see these items in the cave:");
+                player.getCurrentRoom().inventory.showContents();
+            }
+            else
+            {
+                Console.WriteLine("There are no items in this cave.");
+            }
         }
 
         private void showCompass()
