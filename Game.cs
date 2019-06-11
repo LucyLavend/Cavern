@@ -101,7 +101,8 @@ namespace CavernCS
             Console.WriteLine("Welcome to Cavern!");
             Console.ForegroundColor = ConsoleColor.Gray;
 			Console.WriteLine("Cavern is a small text adventure game.");
-			Console.WriteLine("You ended up somewhere deep in a cave system and you have to find your way out!");
+			Console.WriteLine("You ended up somewhere deep in a cave \nsystem and you have to find your way out!");
+            Console.WriteLine();
             Console.WriteLine("Type 'compass' for a compass.");
             Console.WriteLine("Type 'help' if you need help.");
 			Console.WriteLine("------------------------------------------");
@@ -267,7 +268,9 @@ namespace CavernCS
             }
             else
             {
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("You took the " + item + ".");
+                Console.ForegroundColor = ConsoleColor.Gray;
             }
         }
 
@@ -284,11 +287,15 @@ namespace CavernCS
             bool test = player.getCurrentRoom().inventory.swapItem(player.inventory, player.inventory.findItem(item));
             if (!test)
             {
-                Console.WriteLine("Cannot drop item.");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("Cannot drop " + item + ".");
+                Console.ForegroundColor = ConsoleColor.Gray;
             }
             else
             {
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("You dropped the " + item + ".");
+                Console.ForegroundColor = ConsoleColor.Gray;
             }
         }
 
