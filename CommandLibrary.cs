@@ -20,7 +20,9 @@ namespace CavernCS
                 "compass",
                 "check",
                 "clear",
-                "inv"
+                "inv",
+                "take",
+                "drop"
 			};
 		}
 
@@ -48,6 +50,10 @@ namespace CavernCS
 				Console.Write(validCommands[i]);
 				if (i != validCommands.Length - 1) {
 					Console.Write(", ");
+                    if((i + 1) % 8 == 0)
+                    {
+                        Console.WriteLine();
+                    }
 				}
 			}
 			Console.WriteLine();

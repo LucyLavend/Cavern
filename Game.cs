@@ -22,8 +22,6 @@ namespace CavernCS
             createItems();
 
             player.inventory.MaxWeight = 10f;
-            player.inventory.addItem(ring);
-            player.inventory.addItem(crowbar);
         }
 
 		private void createRooms()
@@ -59,8 +57,8 @@ namespace CavernCS
 
         private void createItems()
         {
-            ring = new Ring("Ring", "An old looking ring", .1f);
-            crowbar = new Crowbar("Crowbar", "A rusty crowbar", 1.3f);
+            ring = new Ring("ring", "An old looking ring", .1f);
+            crowbar = new Crowbar("crowbar", "A rusty crowbar", 1.3f);
 
             center.inventory.addItem(ring);
 
@@ -154,6 +152,12 @@ namespace CavernCS
                 case "inv":
                     player.inventory.showContents();
                     break;
+                case "take":
+                    takeItem(command);
+                    break;
+                case "drop":
+                    dropItem(command);
+                    break;
             }
 
 			return wantToQuit;
@@ -169,7 +173,7 @@ namespace CavernCS
 		private void printHelp()
 		{
             Console.ForegroundColor = ConsoleColor.DarkGray;
-	    	Console.WriteLine("<?--------------------?>");
+	    	Console.WriteLine("<?-------------------------------------------?>");
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine("You wanted to take a shortcut, but you got lost.");
 			Console.WriteLine("You wander around in a cave system.");
@@ -177,7 +181,7 @@ namespace CavernCS
 			Console.WriteLine("Your command words are:");
 			parser.showCommands();
             Console.ForegroundColor = ConsoleColor.DarkGray;
-	    	Console.WriteLine("<?--------------------?>");
+	    	Console.WriteLine("<?-------------------------------------------?>");
             Console.ForegroundColor = ConsoleColor.Gray;
         }
 
@@ -245,6 +249,48 @@ namespace CavernCS
                 Console.WriteLine("You have a wound on your arm and lost a bit of blood.");
 			}
 		}
+
+        private void takeItem(Command command)
+        {
+            if (!command.hasSecondWord())
+            {
+                // if there is no second word, we don't know what to take
+                Console.WriteLine("Take what?");
+                return;
+            }
+
+            string item = command.getSecondWord();
+            bool test = player.inventory.swapItem(player.getCurrentRoom().inventory, player.getCurrentRoom().inventory.findItem(item));
+            if (!test)
+            {
+                Console.WriteLine("Item could not be found.");
+            }
+            else
+            {
+                Console.WriteLine("You took the " + item + ".");
+            }
+        }
+
+        private void dropItem(Command command)
+        {
+            if (!command.hasSecondWord())
+            {
+                // if there is no second word, we don't know what to drop
+                Console.WriteLine("Drop what?");
+                return;
+            }
+
+            string item = command.getSecondWord();
+            bool test = player.getCurrentRoom().inventory.swapItem(player.inventory, player.inventory.findItem(item));
+            if (!test)
+            {
+                Console.WriteLine("Cannot drop item.");
+            }
+            else
+            {
+                Console.WriteLine("You dropped the " + item + ".");
+            }
+        }
 
         private void clearConsole()
         {

@@ -9,7 +9,7 @@
 
         public Player()
         {
-            inventory = new Inventory();
+            inventory = new Inventory("Your inventory");
             health = 100;
         }
 
