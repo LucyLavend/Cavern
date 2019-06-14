@@ -58,7 +58,7 @@ namespace CavernCS
         {
             ring = new Ring("ring", "An old looking ring", .1f);
             crowbar = new Crowbar("crowbar", "A rusty crowbar", 1.3f);
-            arrowhead = new Arrowhead("arrowhead", "A sharp looking arrow tip", .2f);
+            arrowhead = new Arrowhead("arrowhead", "A sharp looking arrow tip", .2f, player);
 
             //add items to the rooms
             center.inventory.addItem(ring);
@@ -303,7 +303,8 @@ namespace CavernCS
             }
         }
 
-        private void useItem(Command command, Object other = null)
+        //use item
+        private void useItem(Command command)
         {
             if (!command.hasSecondWord())
             {
@@ -311,14 +312,31 @@ namespace CavernCS
                 Console.WriteLine("Use what?");
                 return;
             }
-            if (!command.hasThirdWord())
+            else if (!command.hasThirdWord())
             {
                 // if there is no third word, we don't know what to use it on
-                Console.WriteLine("Use on what?");
+                if (player.inventory.findItem(command.getSecondWord()) != null)
+                {
+                    player.inventory.findItem(command.getSecondWord()).use();
+                }
+                else
+                {
+                    Console.WriteLine(command.getSecondWord() +  " not found in inventory!");
+                }
                 return;
             }
+            else
+            {
+                if (player.inventory.findItem(command.getSecondWord()) != null && player.inventory.findItem(command.getThirdWord()) != null)
+                {
+                    player.inventory.findItem(command.getSecondWord()).use(command.getThirdWord());
+                }
+                else
+                {
+                    Console.WriteLine(command.getSecondWord() + " or " + command.getThirdWord() + " not found in inventory!");
+                }
+            }
 
-            //player.inventory.findItem(command.getSecondWord()).use(command.getThirdWord());
         }
 
         private void clearConsole()

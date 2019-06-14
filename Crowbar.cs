@@ -17,5 +17,10 @@ namespace CavernCS
         {
 
         }
+
+        public override void use()
+        {
+            Console.WriteLine("You swung the crowbar in the air... nothing happened");
+        }
     }
 }

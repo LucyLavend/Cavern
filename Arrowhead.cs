@@ -13,9 +13,14 @@ namespace CavernCS
             this.name = "Arrowhead";
         }
 
-        public Arrowhead(string name, string description, float weight) : base(name, description, weight)
+        public Arrowhead(string name, string description, float weight, object objectToUseOn) : base(name, description, weight, objectToUseOn)
         {
 
+        }
+
+        public override void use()
+        {
+            use(objectToUseOn);
         }
 
         public override void use(Object o)
@@ -23,7 +28,12 @@ namespace CavernCS
             if (o.GetType() == typeof(Player))
             {
                 Player p = (Player)o; // must cast
+                Console.WriteLine("You fiddled aroud with the arrowhead");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("You accidentally cut yourself!");
                 p.damage(5);
+                Console.WriteLine("Your health is now " + p.getHealth());
+                Console.ForegroundColor = ConsoleColor.Gray;
             }
             else
             {

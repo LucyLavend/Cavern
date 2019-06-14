@@ -17,5 +17,11 @@ namespace CavernCS
         {
 
         }
+
+        public override void use()
+        {
+            Console.WriteLine("You looked at the ring.. it's just a ring");
+        }
+
     }
 }

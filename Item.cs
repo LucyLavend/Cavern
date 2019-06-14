@@ -10,6 +10,7 @@ namespace CavernCS
         protected string name;
         protected string description;
         protected float weight;
+        protected object objectToUseOn;
 
         public Item()
         {
@@ -18,21 +19,22 @@ namespace CavernCS
             Weight = 1;
         }
 
-        public virtual void use(Object o)
+        public virtual void use(object o)
         {
-
+            Console.WriteLine(this.Name + " cannot be used on that.");
         }
 
-        public virtual void Use()
+        public virtual void use()
         {
-
+            Console.WriteLine("object used");
         }
 
-        public Item(string name, string description, float weight)
+        public Item(string name, string description, float weight, object obj = null)
         {
             Name = name;
             Description = description;
             Weight = weight;
+            objectToUseOn = obj;
         }
 
         public string Description
