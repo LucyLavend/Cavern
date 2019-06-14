@@ -4,6 +4,7 @@
     {
         private Room currentRoom;
         private uint health;
+        private bool isBleeding;
 
         public Inventory inventory;
 
@@ -12,6 +13,8 @@
             inventory = new Inventory("Your inventory");
             health = 100;
         }
+
+        public bool IsBleeding { get; set; }
 
         public uint getHealth()
         {

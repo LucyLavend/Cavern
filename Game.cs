@@ -249,9 +249,12 @@ namespace CavernCS
                 Console.WriteLine(player.getCurrentRoom().getLongDescription());
                 //set text above the window to the current room
                 Console.Title = "Cavern: " + player.getCurrentRoom().getShortDescription();
-                //damage player
-                player.damage(1);
-                Console.WriteLine("You have a wound on your arm and lost a bit of blood.");
+                //damage player if wounded
+                if (player.IsBleeding)
+                {
+                    player.damage(1);
+                    Console.WriteLine("You have a wound and lost a bit of blood.");
+                }
 			}
 		}
 
@@ -347,12 +350,14 @@ namespace CavernCS
 
         private void printLogo()
         {
-            Console.ForegroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine(@" ___  ___  _ _  ___  ___  _ _ ");
             Console.WriteLine(@"|  _|| . || | || __|| . \| \ |");
             Console.WriteLine(@"| <_ |   || ' || _| |   /|   |");
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine(@"\___||_|_||__/ |___||_\_\|_\_|");
             Console.ForegroundColor = ConsoleColor.Gray;
+
         }
 
     }

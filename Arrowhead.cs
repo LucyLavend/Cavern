@@ -32,6 +32,7 @@ namespace CavernCS
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("You accidentally cut yourself!");
                 p.damage(5);
+                p.IsBleeding = true;
                 Console.WriteLine("Your health is now " + p.getHealth());
                 Console.ForegroundColor = ConsoleColor.Gray;
             }
