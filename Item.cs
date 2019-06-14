@@ -18,6 +18,16 @@ namespace CavernCS
             Weight = 1;
         }
 
+        public virtual void use(Object o)
+        {
+
+        }
+
+        public virtual void Use()
+        {
+
+        }
+
         public Item(string name, string description, float weight)
         {
             Name = name;

@@ -22,7 +22,8 @@ namespace CavernCS
                 "clear",
                 "inv",
                 "take",
-                "drop"
+                "drop",
+                "use"
 			};
 		}
 

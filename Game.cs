@@ -9,8 +9,7 @@ namespace CavernCS
 		private Room center, temple, hideout, waterfall, deadend, underwater;
 
         //Items
-        private Ring ring;
-        private Crowbar crowbar;
+        private Item ring, crowbar, arrowhead;
 
 		public Game ()
 		{
@@ -59,10 +58,12 @@ namespace CavernCS
         {
             ring = new Ring("ring", "An old looking ring", .1f);
             crowbar = new Crowbar("crowbar", "A rusty crowbar", 1.3f);
+            arrowhead = new Arrowhead("arrowhead", "A sharp looking arrow tip", .2f);
 
+            //add items to the rooms
             center.inventory.addItem(ring);
-
             hideout.inventory.addItem(crowbar);
+            deadend.inventory.addItem(arrowhead);
         }
 
 
@@ -159,6 +160,9 @@ namespace CavernCS
                 case "drop":
                     dropItem(command);
                     break;
+                case "use":
+                    useItem(command);
+                    break;
             }
 
 			return wantToQuit;
@@ -246,7 +250,7 @@ namespace CavernCS
                 //set text above the window to the current room
                 Console.Title = "Cavern: " + player.getCurrentRoom().getShortDescription();
                 //damage player
-                player.damage(10);
+                player.damage(1);
                 Console.WriteLine("You have a wound on your arm and lost a bit of blood.");
 			}
 		}
@@ -297,6 +301,24 @@ namespace CavernCS
                 Console.WriteLine("You dropped the " + item + ".");
                 Console.ForegroundColor = ConsoleColor.Gray;
             }
+        }
+
+        private void useItem(Command command, Object other = null)
+        {
+            if (!command.hasSecondWord())
+            {
+                // if there is no second word, we don't know what to use
+                Console.WriteLine("Use what?");
+                return;
+            }
+            if (!command.hasThirdWord())
+            {
+                // if there is no third word, we don't know what to use it on
+                Console.WriteLine("Use on what?");
+                return;
+            }
+
+            //player.inventory.findItem(command.getSecondWord()).use(command.getThirdWord());
         }
 
         private void clearConsole()
