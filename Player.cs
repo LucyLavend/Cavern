@@ -3,6 +3,7 @@
     public class Player
     {
         private Room currentRoom;
+        private Room lastRoom;
         private uint health;
         private bool isBleeding;
 
@@ -29,6 +30,16 @@
         public void setCurrentRoom(Room r)
         {
             currentRoom = r;
+        }
+
+        public Room getLastRoom()
+        {
+            return lastRoom;
+        }
+
+        public void setLastRoom(Room r)
+        {
+            lastRoom = r;
         }
 
         public void damage(uint amount)

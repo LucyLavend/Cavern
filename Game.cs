@@ -231,7 +231,8 @@ namespace CavernCS
 	     */
         private void goRoom(Command command)
 		{
-			if(!command.hasSecondWord()) {
+
+            if (!command.hasSecondWord()) {
 				// if there is no second word, we don't know where to go...
 				Console.WriteLine("Go where?");
 				return;
@@ -239,17 +240,32 @@ namespace CavernCS
 
 			string direction = command.getSecondWord();
 
-			// Try to leave current room.
-			Room nextRoom = player.getCurrentRoom().getExit(direction);
+            if (direction != "back")
+            {
+                //set last room
+            }
 
-			if (nextRoom == null) {
+            // Try to leave current room.
+            Room nextRoom = player.getCurrentRoom().getExit(direction);
+            Room lastRoom = player.getCurrentRoom();
+
+
+            if (nextRoom == null && direction != "back") {
                 Console.ForegroundColor = ConsoleColor.Yellow;
 				Console.WriteLine("There is no cave to " + direction + "!");
                 Console.ForegroundColor = ConsoleColor.Gray;
-			} else
+			}
+            else
             {
 	    		Console.WriteLine("----");
-                player.setCurrentRoom(nextRoom);
+                if(direction == "back")
+                {
+                    player.setCurrentRoom(player.getLastRoom());
+                }
+                else
+                {
+                    player.setCurrentRoom(nextRoom);
+                }
                 Console.WriteLine(player.getCurrentRoom().getLongDescription());
                 //set text above the window to the current room
                 Console.Title = "Cavern: " + player.getCurrentRoom().getShortDescription();
@@ -262,7 +278,9 @@ namespace CavernCS
                     Console.ForegroundColor = ConsoleColor.Gray;
                 }
             }
-		}
+            player.setLastRoom(lastRoom);
+
+        }
 
         private void takeItem(Command command)
         {
