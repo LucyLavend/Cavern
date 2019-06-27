@@ -9,7 +9,7 @@ namespace CavernCS
 		private Room center, temple, hideout, waterfall, deadend, underwater;
 
         //Items
-        private Item ring, crowbar, arrowhead;
+        private Item ring, crowbar, arrowhead, bandaid;
 
 		public Game ()
 		{
@@ -59,6 +59,10 @@ namespace CavernCS
             ring = new Ring("ring", "An old looking ring", .1f);
             crowbar = new Crowbar("crowbar", "A rusty crowbar", 1.3f);
             arrowhead = new Arrowhead("arrowhead", "A sharp looking arrow tip", .2f, player);
+            bandaid = new Bandaid("bandaid", "Just in case", .04f, player);
+
+            //add to player inventory
+            player.inventory.addItem(bandaid);
 
             //add items to the rooms
             center.inventory.addItem(ring);
@@ -252,10 +256,12 @@ namespace CavernCS
                 //damage player if wounded
                 if (player.IsBleeding)
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     player.damage(1);
-                    Console.WriteLine("You have a wound and lost a bit of blood.");
+                    Console.WriteLine("You have a wound and lost a bit of blood!");
+                    Console.ForegroundColor = ConsoleColor.Gray;
                 }
-			}
+            }
 		}
 
         private void takeItem(Command command)
